@@ -3,6 +3,7 @@ package com.devorbit.linkedin.post_service.service.impl;
 import com.devorbit.linkedin.post_service.dto.PostCreateRequestDto;
 import com.devorbit.linkedin.post_service.dto.PostDto;
 import com.devorbit.linkedin.post_service.entity.Post;
+import com.devorbit.linkedin.post_service.exception.ResourceNotFoundException;
 import com.devorbit.linkedin.post_service.repository.PostRepository;
 import com.devorbit.linkedin.post_service.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -28,5 +29,13 @@ public class PostServiceImpl implements PostService {
 		Post savedPost = postRepository.save(post);
 
 		return modelMapper.map(savedPost, PostDto.class);
+	}
+
+	@Override
+	public PostDto getPostById(Long postId) {
+
+		Post post = postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("Post not found with id: "+postId));
+
+		return modelMapper.map(post, PostDto.class);
 	}
 }
