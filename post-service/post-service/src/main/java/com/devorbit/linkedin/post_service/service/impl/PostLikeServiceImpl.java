@@ -33,4 +33,17 @@ public class PostLikeServiceImpl implements PostLikeService {
 
 		postLikeRepository.save(postLike);
 	}
+
+	@Override
+	public void unlikePost(Long postId, Long userId) {
+
+		boolean postExists = postRepository.existsById(postId);
+		if(!postExists) throw new ResourceNotFoundException("Post not found with id: "+postId);
+
+		boolean userAlreadyLikedPost = postLikeRepository.existsByUserIdAndPostId(userId, postId);
+		if(!userAlreadyLikedPost) throw new BadRequestException("Cannot unlike the post which is not liked.");
+
+		postLikeRepository.deleteByUserIdAndPostId(userId, postId);
+
+	}
 }

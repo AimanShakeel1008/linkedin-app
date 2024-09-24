@@ -3,10 +3,7 @@ package com.devorbit.linkedin.post_service.controller;
 import com.devorbit.linkedin.post_service.service.PostLikeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/likes")
@@ -18,6 +15,13 @@ public class LikesController {
 	@PostMapping("/{postId}")
 	public ResponseEntity<Void> likePost(@PathVariable Long postId) {
 		postLikeService.likePost(postId, 1L);
+
+		return ResponseEntity.noContent().build();
+	}
+
+	@DeleteMapping("/{postId}")
+	public ResponseEntity<Void> unlikePost(@PathVariable Long postId) {
+		postLikeService.unlikePost(postId, 1L);
 
 		return ResponseEntity.noContent().build();
 	}
